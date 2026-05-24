@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOCHICK Fried Chicken</title>
+    <link rel="icon" type="image/png" href="assets/kochick-icon.png">
+    <link rel="apple-touch-icon" href="assets/kochick-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:          #FFFFFF;
+            --bg-soft:     #F7F6F4;
+            --bg-subtle:   #F2F1EE;
+            --surface:     #EDECE9;
+            --border:      #E0DFDB;
+            --text:        #1A1A1A;
+            --text-2:      #4A4A4A;
+            --muted:       #8A8A8A;
+            --red:         #D9261C;
+            --red-dark:    #B01F16;
+            --red-soft:    #FFF0EE;
+            --gold:        #E69A10;
+            --gold-soft:   #FFF8EC;
+            --font-d:      'Bebas Neue', sans-serif;
+            --font-b:      'Inter', sans-serif;
+            --radius-sm:   8px;
+            --radius:      14px;
+            --radius-lg:   20px;
+            --shadow-sm:   0 1px 4px rgba(0,0,0,.06);
+            --shadow:      0 4px 20px rgba(0,0,0,.08);
+            --shadow-lg:   0 12px 48px rgba(0,0,0,.12);
+            --ease:        cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-b);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg-soft); }
+        ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+
+        /* ── UTILITY ──────────────────────────── */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+
+        .section-head h2 {
+            font-family: var(--font-d);
+            font-size: 1.75rem;
+            letter-spacing: 0.06em;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .count-pill {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 4px 12px;
+            white-space: nowrap;
+        }
+
+        /* ── HEADER ───────────────────────────── */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            background: rgba(255,255,255,0.94);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+        }
+
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .site-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+            background: var(--gold-soft);
+        }
+
+        .logo-mark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .logo-name {
+            font-family: var(--font-d);
+            font-size: 1.7rem;
+            letter-spacing: 0.05em;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .logo-name span { color: var(--red); }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-link {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-2);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .nav-link:hover { background: var(--bg-soft); color: var(--text); }
+        .nav-link.active { color: var(--red); background: var(--red-soft); }
+
+        .nav-enquire {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: white;
+            background: var(--red);
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: var(--radius-sm);
+            margin-left: 8px;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-enquire:hover { background: var(--red-dark); }
+
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+
+        .nav-hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            background: white;
+            border-top: 1px solid var(--border);
+            padding: 12px 24px 20px;
+        }
+
+        .mobile-menu.open { display: flex; }
+
+        .mobile-menu .nav-link {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            border-radius: 0;
+        }
+
+        .mobile-menu .nav-link:last-of-type { border-bottom: none; }
+
+        .mobile-menu .nav-enquire {
+            margin: 12px 0 0;
+            display: block;
+            text-align: center;
+            padding: 12px;
+        }
+
+
+
+        /* ── MENU ─────────────────────────────── */
+        .menu-section {
+            padding: 64px 0;
+            background: var(--bg);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 240px;
+            gap: 10px;
+        }
+
+        @keyframes shimmer {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* ── GALLERY ──────────────────────────── */
+        .gallery-section {
+            padding: 64px 0;
+            background: var(--bg-soft);
+            border-top: 1px solid var(--border);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 240px;
+            gap: 10px;
+        }
+
+        .gallery-grid .g-item:nth-child(1)      { grid-column: span 2; grid-row: span 2; }
+        .gallery-grid .g-item:nth-child(8)      { grid-column: span 2; }
+        .gallery-grid .g-item:nth-child(15)     { grid-column: span 2; }
+
+        .g-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            background: var(--surface);
+            isolation: isolate;
+        }
+
+        .g-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s var(--ease);
+            opacity: 0;
+        }
+
+        .g-item img.visible {
+            opacity: 1;
+            transition: opacity 0.4s ease, transform 0.5s var(--ease);
+        }
+
+        .g-item:hover img { transform: scale(1.07); }
+
+        .g-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            padding: 12px;
+        }
+
+        .g-item:hover .g-overlay { opacity: 1; }
+
+        .g-expand-btn {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .g-expand-btn svg {
+            width: 13px;
+            height: 13px;
+            stroke: var(--red);
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .g-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, var(--surface) 0%, var(--bg-subtle) 50%, var(--surface) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.6s infinite;
+        }
+
+        .g-item.loaded::before { display: none; }
+
+        /* ── PANDA LODGE ──────────────────────── */
+        .lodge-section {
+            padding: 64px 0;
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+        }
+
+        .lodge-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .lodge-card {
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .lodge-card-top {
+            background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+            padding: 28px 28px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lodge-card-top::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 140px;
+            height: 140px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 50%;
+        }
+
+        .lodge-card-top::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 50%;
+        }
+
+        .lodge-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.9);
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .lodge-name {
+            font-family: var(--font-d);
+            font-size: 2.5rem;
+            letter-spacing: 0.04em;
+            color: white;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .lodge-tagline {
+            font-size: 0.88rem;
+            color: rgba(255,255,255,0.75);
+        }
+
+        .lodge-card-body {
+            padding: 24px 28px 28px;
+        }
+
+        .lodge-info-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .lodge-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .lodge-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: var(--red-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .lodge-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--red);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .lodge-info-text strong {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 2px;
+        }
+
+        .lodge-info-text span {
+            font-size: 0.92rem;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+
+        .lodge-map-wrap {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            height: 100%;
+            min-height: 460px;
+        }
+
+        .lodge-map-wrap iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 460px;
+            display: block;
+            border: none;
+        }
+
+        /* ── LIGHTBOX ─────────────────────────── */
+        .lb {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0,0,0,0.92);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .lb.open { opacity: 1; pointer-events: all; }
+
+        .lb-inner {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            max-width: 92vw;
+        }
+
+        .lb-img {
+            max-width: 88vw;
+            max-height: 78vh;
+            object-fit: contain;
+            border-radius: 6px;
+            display: block;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+            transition: opacity 0.18s ease;
+        }
+
+        .lb-img.fading { opacity: 0; }
+
+        .lb-close {
+            position: absolute;
+            top: -48px;
+            right: 0;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .lb-close:hover { background: var(--red); border-color: var(--red); }
+
+        .lb-bar {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .lb-nav-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .lb-nav-btn:hover { background: var(--red); border-color: var(--red); }
+
+        .lb-counter {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 0.12em;
+            min-width: 52px;
+            text-align: center;
+        }
+
+        /* ── FOOTER ───────────────────────────── */
+        .site-footer {
+            background: var(--text);
+            padding: 40px 24px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-logo {
+            font-family: var(--font-d);
+            font-size: 1.75rem;
+            letter-spacing: 0.06em;
+            color: white;
+        }
+
+        .footer-logo span { color: var(--red); }
+
+        .footer-copy {
+            font-size: 0.8rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.45);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover { color: white; }
+
+        /* ── RESPONSIVE ───────────────────────── */
+        @media (max-width: 1024px) {
+            .menu-grid { grid-template-columns: repeat(3, 1fr); }
+            .gallery-grid { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 200px; }
+            .gallery-grid .g-item:nth-child(8)  { grid-column: span 1; }
+            .gallery-grid .g-item:nth-child(15) { grid-column: span 1; }
+        }
+
+        @media (max-width: 768px) {
+            .header-nav, .nav-enquire { display: none; }
+            .nav-hamburger { display: flex; }
+
+            .hero { padding: 52px 20px 48px; }
+
+            .stats-inner { flex-wrap: wrap; justify-content: center; }
+            .stat-item { padding: 20px 24px; border-right: none; border-bottom: 1px solid var(--border); }
+            .stat-item:last-child { border-bottom: none; }
+
+            .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: 170px;
+                gap: 8px;
+            }
+
+            .gallery-grid .g-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+            .gallery-grid .g-item:nth-child(8),
+            .gallery-grid .g-item:nth-child(15) { grid-column: span 1; }
+
+            .lodge-layout { grid-template-columns: 1fr; }
+            .lodge-map-wrap { min-height: 300px; }
+            .lodge-map-wrap iframe { min-height: 300px; }
+
+            .footer-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .footer-links { flex-wrap: wrap; gap: 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0 16px; }
+            .menu-grid { grid-template-columns: 1fr 1fr; gap: 8px; grid-auto-rows: 160px; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 140px; }
+            .hero-title { font-size: clamp(3rem, 16vw, 5rem); }
+            .lodge-name { font-size: 2rem; }
+            .lodge-card-body { padding: 20px; }
+            .lodge-card-top { padding: 24px 20px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="site-header">
+    <div class="header-inner">
+        <a href="#" class="site-logo" aria-label="KOCHICK Home">
+            <div class="logo-mark" aria-hidden="true">
+                <img src="assets/kochick-icon.png" alt="">
+            </div>
+            <span class="logo-name"><span>KO</span>CHICK</span>
+        </a>
+
+        <nav class="header-nav" aria-label="Main navigation">
+            <a href="#menu" class="nav-link active">Menu</a>
+            <a href="#gallery" class="nav-link">Gallery</a>
+            <a href="#lodge" class="nav-link">Panda Lodge</a>
+            <a href="https://wa.me/918281256859?text=Hi%2C%20I%20have%20an%20enquiry" class="nav-enquire" target="_blank" rel="noopener noreferrer" aria-label="Enquire on WhatsApp">Enquire Now</a>
+        </nav>
+
+        <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+        <a href="#menu" class="nav-link">Menu</a>
+        <a href="#gallery" class="nav-link">Gallery</a>
+        <a href="#lodge" class="nav-link">Panda Lodge</a>
+        <a href="https://wa.me/918281256859?text=Hi%2C%20I%20have%20an%20enquiry" class="nav-enquire" target="_blank" rel="noopener noreferrer">Enquire Now</a>
+    </nav>
+</header>
+
+
+<!-- ── MENU ── -->
+<section class="menu-section" id="menu" aria-labelledby="menu-heading">
+    <div class="container">
+        <div class="section-head">
+            <h2 id="menu-heading">MENU</h2>
+            <div class="section-line"></div>
+            <span class="count-pill">8 Items</span>
+        </div>
+        <div class="menu-grid" id="menuGrid" role="list" aria-label="Menu items"></div>
+    </div>
+</section>
+
+<!-- ── GALLERY ── -->
+<section class="gallery-section" id="gallery" aria-labelledby="gallery-heading">
+    <div class="container">
+        <div class="section-head">
+            <h2 id="gallery-heading">GALLERY</h2>
+            <div class="section-line"></div>
+            <span class="count-pill">21 Photos</span>
+        </div>
+        <div class="gallery-grid" id="galleryGrid" role="list" aria-label="Photo gallery"></div>
+    </div>
+</section>
+
+<!-- ── PANDA LODGE ── -->
+<section class="lodge-section" id="lodge" aria-labelledby="lodge-heading">
+    <div class="container">
+        <div class="section-head">
+            <h2 id="lodge-heading">PANDA LODGE</h2>
+            <div class="section-line"></div>
+            <span class="count-pill">Our Location</span>
+        </div>
+
+        <div class="lodge-layout">
+            <!-- Info Card -->
+            <div class="lodge-card">
+                <div class="lodge-card-top">
+                    <div class="lodge-type-badge">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        Lodge &amp; Stay
+                    </div>
+                    <h3 class="lodge-name">PANDA LODGE</h3>
+                    <p class="lodge-tagline">A comfortable retreat for your stay</p>
+                </div>
+
+                <div class="lodge-card-body">
+                    <ul class="lodge-info-list" aria-label="Lodge details">
+                        <li class="lodge-info-item">
+                            <div class="lodge-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </div>
+                            <div class="lodge-info-text">
+                                <strong>Address</strong>
+                                <span>Panda Lodge — update with exact address</span>
+                            </div>
+                        </li>
+                        <li class="lodge-info-item">
+                            <div class="lodge-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.83a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg>
+                            </div>
+                            <div class="lodge-info-text">
+                                <strong>Phone</strong>
+                                <span>+91 XXXXX XXXXX</span>
+                            </div>
+                        </li>
+                        <li class="lodge-info-item">
+                            <div class="lodge-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </div>
+                            <div class="lodge-info-text">
+                                <strong>Hours</strong>
+                                <span>Open 24 hours · Check-in from 12:00 PM</span>
+                            </div>
+                        </li>
+                    </ul>
+
+
+                </div>
+            </div>
+
+            <!-- Map Embed -->
+            <div class="lodge-map-wrap">
+                <!--
+                    UPDATE THIS IFRAME SRC with the specific Google Maps embed URL for Panda Lodge.
+                    To get the correct embed URL:
+                    1. Go to maps.google.com → search "Panda Lodge"
+                    2. Click Share → Embed a map → Copy HTML
+                    3. Paste the src URL below
+                -->
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3933.4944852812896!2d76.6065655!3d9.6387211!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b07d31fafb04c29%3A0xe13a00deb6594ee7!2sPanda%20lodge!5e0!3m2!1sen!2sin!4v1779381095512!5m2!1sen!2sin"
+                    title="Panda Lodge location on Google Maps"
+                    allowfullscreen
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    aria-label="Map showing Panda Lodge location"
+                ></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+        <div class="footer-logo"><span>KO</span>CHICK</div>
+        <nav class="footer-links" aria-label="Footer navigation">
+            <a href="#menu">Menu</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#lodge">Panda Lodge</a>
+        </nav>
+        <p class="footer-copy">&copy; 2026 KOCHICK Fried Chicken. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- ── LIGHTBOX ── -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <div class="lb-inner">
+        <button class="lb-close" id="lbClose" aria-label="Close viewer">&#x2715;</button>
+        <img class="lb-img" id="lbImg" src="" alt="">
+        <div class="lb-bar">
+            <button class="lb-nav-btn" id="lbPrev" aria-label="Previous photo">&#8249;</button>
+            <span class="lb-counter" id="lbCtr">1 / 21</span>
+            <button class="lb-nav-btn" id="lbNext" aria-label="Next photo">&#8250;</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* ── DATA ── */
+    const ALL_IDS = [
+        '1URvBNaw88wJ9BO1pznKIilSojHhWajmg',
+        '1obUmdSOD_s24FaRw_4rcYW-HqldoZFOb',
+        '1ch_XzLmlliYlgg-DWTSdiNJrLU5JWtQ2',
+        '1-UgoWdE7elYsCxAdBcz0sbVCnLAy0Fr1',
+        '1jMNGRQ8zagnDJifZVJWWccWyfQts5NGs',
+        '1Nhk8uLVwLdO6wztM2Z32yHfFVHfaxy3A',
+        '1I3qiEzMmR1VCbQudfC0Kfl64U8diqoud',
+        '1P13691TsUqjGHnuzE8eWNFzeuKeWX9-d',
+        '192KWMI1yXC0AH-xhbQ3inZySN8tY8pND',
+        '1gT2gb_y9dE6g79F_oZf2BzFvZXeLRAJE',
+        '1a_aRvpRymN6zdOupUT0dp-eocqegffXV',
+        '1WEaJteP_cRj-m2_MUaXkStbyg-EZD9bd',
+        '1JINg1ifDjftoCcQ_eQJb4DBldsdiELLm',
+        '12TQVcpbFtTFJ9HZDEIZMl36jHwhq38ai',
+        '1V1GcYhc1vOlVFXVzqLgtlhfm8tExArxx',
+        '1U2z0Tk-UgSoJAE_7hbNz-TQQwiG4JAKk',
+        '1BRBCoQyE4jE0eZOuk24xlldy72MWNYzo',
+        '1-POA0x5UTwMT_o5W61PZEtvhFc6Ojv1I',
+        '1LVStVBwy3GsAu68jm9YVFTTuj_8q5LKl',
+        '1YmkkEBJpEonB90R165UTYym0GHdKLRY2',
+        '1zNYRplgKD7dAKA7rfE7H62fE_iQWIzbl',
+    ];
+
+    /* First 8 images used for the Menu section */
+    const MENU_IDS = ALL_IDS.slice(0, 8);
+
+    function thumb(id, w) { return `https://drive.google.com/thumbnail?id=${id}&sz=w${w}`; }
+
+    /* ── MENU GRID — pure image tiles, same pattern as gallery ── */
+    const menuGrid = document.getElementById('menuGrid');
+
+    MENU_IDS.forEach((id, i) => {
+        const item = document.createElement('div');
+        item.className = 'g-item';
+        item.setAttribute('role', 'listitem');
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('aria-label', `Menu photo ${i + 1}, click to view`);
+        item.innerHTML = `
+            <img src="${thumb(id, 600)}" alt="KOCHICK menu photo ${i + 1}" loading="${i < 4 ? 'eager' : 'lazy'}" decoding="async">
+            <div class="g-overlay" aria-hidden="true">
+                <div class="g-expand-btn">
+                    <svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                </div>
+            </div>
+        `;
+        const img = item.querySelector('img');
+        img.addEventListener('load',  () => { img.classList.add('visible'); item.classList.add('loaded'); });
+        img.addEventListener('error', () => { item.classList.add('loaded'); });
+        item.addEventListener('click', () => openLb(i, MENU_IDS));
+        item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(i, MENU_IDS); } });
+        menuGrid.appendChild(item);
+    });
+
+    /* ── GALLERY GRID ── */
+    const galleryGrid = document.getElementById('galleryGrid');
+
+    ALL_IDS.forEach((id, i) => {
+        const item = document.createElement('div');
+        item.className = 'g-item';
+        item.setAttribute('role', 'listitem');
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('aria-label', `Gallery photo ${i + 1}, click to expand`);
+        item.innerHTML = `
+            <img src="${thumb(id, 700)}" alt="KOCHICK photo ${i + 1}" loading="${i < 8 ? 'eager' : 'lazy'}" decoding="async">
+            <div class="g-overlay" aria-hidden="true">
+                <div class="g-expand-btn">
+                    <svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                </div>
+            </div>
+        `;
+        const img = item.querySelector('img');
+        img.addEventListener('load',  () => { img.classList.add('visible'); item.classList.add('loaded'); });
+        img.addEventListener('error', () => { item.classList.add('loaded'); });
+        item.addEventListener('click', () => openLb(i, ALL_IDS));
+        item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(i, ALL_IDS); } });
+        galleryGrid.appendChild(item);
+    });
+
+    /* ── LIGHTBOX ── */
+    const lb      = document.getElementById('lb');
+    const lbImg   = document.getElementById('lbImg');
+    const lbClose = document.getElementById('lbClose');
+    const lbPrev  = document.getElementById('lbPrev');
+    const lbNext  = document.getElementById('lbNext');
+    const lbCtr   = document.getElementById('lbCtr');
+
+    let lbCurrent = 0;
+    let lbPool    = ALL_IDS;
+
+    function updateLb() {
+        lbImg.classList.add('fading');
+        setTimeout(() => {
+            lbImg.src = thumb(lbPool[lbCurrent], 1200);
+            lbImg.alt = `KOCHICK photo ${lbCurrent + 1}`;
+            lbCtr.textContent = `${lbCurrent + 1} / ${lbPool.length}`;
+            lbImg.classList.remove('fading');
+        }, 180);
+    }
+
+    function openLb(i, pool) {
+        lbCurrent = i;
+        lbPool    = pool;
+        updateLb();
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        lbClose.focus();
+    }
+
+    function closeLb() {
+        lb.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    lbClose.addEventListener('click', closeLb);
+    lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+    lbPrev.addEventListener('click', e => { e.stopPropagation(); lbCurrent = (lbCurrent - 1 + lbPool.length) % lbPool.length; updateLb(); });
+    lbNext.addEventListener('click', e => { e.stopPropagation(); lbCurrent = (lbCurrent + 1) % lbPool.length; updateLb(); });
+
+    document.addEventListener('keydown', e => {
+        if (!lb.classList.contains('open')) return;
+        if (e.key === 'Escape')      closeLb();
+        if (e.key === 'ArrowLeft')  { lbCurrent = (lbCurrent - 1 + lbPool.length) % lbPool.length; updateLb(); }
+        if (e.key === 'ArrowRight') { lbCurrent = (lbCurrent + 1) % lbPool.length; updateLb(); }
+    });
+
+    let touchX = 0;
+    lb.addEventListener('touchstart', e => { touchX = e.changedTouches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend',   e => {
+        const d = touchX - e.changedTouches[0].clientX;
+        if (Math.abs(d) < 40) return;
+        lbCurrent = d > 0
+            ? (lbCurrent + 1) % lbPool.length
+            : (lbCurrent - 1 + lbPool.length) % lbPool.length;
+        updateLb();
+    });
+
+    /* ── MOBILE NAV ── */
+    const hamburger   = document.getElementById('hamburger');
+    const mobileMenu  = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+        const open = mobileMenu.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', String(open));
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+            hamburger.setAttribute('aria-expanded', 'false');
+        });
+    });
+</script>
+</body>
+</html>
